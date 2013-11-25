@@ -12,7 +12,7 @@ from django.test.utils import get_runner
 from django.conf import settings
 
 
-def runtests(tests=('organizations',)):
+def runtests(tests=('mezzanine_organizations',)):
     """
     Takes a list as first argument, enumerating the apps and specific testcases
     that should be executed. The syntax is the same as for what you would pass
@@ -23,18 +23,18 @@ def runtests(tests=('organizations',)):
         # run the default test suite
         runtests()
 
-        # only run the tests from application ``mezzanine_page_auth``
-        runtests(['organizations'])
+        # only run the tests from application ``mezzanine_organizations``
+        runtests(['mezzanine_organizations'])
 
         # only run testcase class ``UnauthorizedListPagesPageAuthGroupTest``
-        # from app ``mezzanine_page_auth``
-        runtests(['mezzanine_page_auth.UnauthorizedListPagesPageAuthGroupTest'])
+        # from app ``mezzanine_organizations``
+        runtests(['mezzanine_organizations.UnauthorizedListPagesPageAuthGroupTest'])
 
         # run all tests from application ``mezzanine_page_auth`` and the test
         # named ``test_register`` on the
-        # ``mezzanine_page_auth.UnauthorizedListPagesPageAuthGroupTest``
+        # ``mezzanine_organizations.UnauthorizedListPagesPageAuthGroupTest``
         # testcase.
-        runtests(['mezzanine_page_auth.UnauthorizedListPagesPageAuthGroupTest.
+        runtests(['mezzanine_organizations.UnauthorizedListPagesPageAuthGroupTest.
         test_unauthorized_list_pages_with_user_with_one_group''])
     """
     TestRunner = get_runner(settings)

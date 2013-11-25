@@ -10,10 +10,10 @@ README = open(os.path.join(
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 install_requires = [
-    "mezzanine >= 1.4.0",
+    "mezzanine >= 1.3.0",
 ]
 
-from mezzanine_page_auth import __version__ as version
+from mezzanine_organizations import __version__ as version
 
 setup(
     name='mezzanine-organizations',
@@ -30,7 +30,7 @@ setup(
     test_suite="runtests.runtests",
     tests_require=["mock", "pep8", "factory_boy"],
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Alpha',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
