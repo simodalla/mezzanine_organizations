@@ -1,48 +1,29 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from django import forms
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.contrib.auth import get_user_model
+from copy import deepcopy
+
+from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import OrganizationalUnit
+from mezzanine.pages.admin import PageAdmin, RichTextPage
+
+from .models import Organization, OrganizationalUnit
+from .forms import OrganizationalUnitForm
 
 
-class MixinUserLabelFromInstance(object):
-    def label_from_instance(self, obj):
-        label = obj.username
-        if obj.last_name and obj.first_name:
-            label = u'{} {}'.format(
-                obj.last_name, obj.first_name).lower().title()
-        if obj.email:
-            label += u' - {}'.format(obj.email)
-        return label
+class OrganizationAdmin(PageAdmin):
+    fieldsets = (deepcopy(PageAdmin.fieldsets) +
+                 ((_("Organization Data"), {"fields": ("domain",)}),))
+
+class OrganizationalUnitAdmin(PageAdmin):
+    fieldsets = (deepcopy(PageAdmin.fieldsets) +
+                 ((_("Organizational Unit Data"),
+                   {"fields": ("organization", "leader", "members",
+                               "email", "pec", "phone_number", "fax",
+                               "location")}),))
+    form = OrganizationalUnitForm
 
 
-class UserModelChoiceField(MixinUserLabelFromInstance,
-                           forms.ModelChoiceField):
-    pass
-
-
-class UsersModelMultipleChoiceField(MixinUserLabelFromInstance,
-                                    forms.ModelMultipleChoiceField):
-    pass
-
-
-class OrganizationalUnitForm(forms.ModelForm):
-    leader = UserModelChoiceField(
-        queryset=get_user_model().objects.exclude(email__exact='').exclude(
-            is_staff=False).order_by('last_name', 'first_name'),
-        required=False,
-        help_text=u'The "members" field show only users whit "email" field is'
-                  u' not empty and field "is_staff" set to "True".')
-    members = UsersModelMultipleChoiceField(
-        queryset=get_user_model().objects.exclude(email__exact='').exclude(
-            is_staff=False).order_by('last_name', 'first_name'),
-        widget=FilteredSelectMultiple(_('Members'), False, attrs={}),
-        required=False,
-        help_text=u'The "members" field show only users whit "email" field is'
-                  u' not empty and field "is_staff" set to "True".')
-
-    class Meta:
-        model = OrganizationalUnit
+admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(OrganizationalUnit, OrganizationalUnitAdmin)
