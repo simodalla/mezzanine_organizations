@@ -31,19 +31,20 @@ class UsersModelMultipleChoiceField(MixinUserLabelFromInstance,
 
 
 class OrganizationalUnitForm(forms.ModelForm):
+    _help_text_user_model = _(
+        'The "members" field show only users with "email" field is not empty'
+        ' and field "is_staff" set to "True".')
     leader = UserModelChoiceField(
         queryset=get_user_model().objects.exclude(email__exact='').exclude(
             is_staff=False).order_by('last_name', 'first_name'),
         required=False,
-        help_text=u'The "members" field show only users whit "email" field is'
-                  u' not empty and field "is_staff" set to "True".')
+        help_text=_help_text_user_model)
     members = UsersModelMultipleChoiceField(
         queryset=get_user_model().objects.exclude(email__exact='').exclude(
             is_staff=False).order_by('last_name', 'first_name'),
         widget=FilteredSelectMultiple(_('Members'), False, attrs={}),
         required=False,
-        help_text=u'The "members" field show only users whit "email" field is'
-                  u' not empty and field "is_staff" set to "True".')
+        help_text=_help_text_user_model)
 
     class Meta:
         model = OrganizationalUnit

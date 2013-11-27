@@ -24,6 +24,12 @@ class OrganizationalUnitAdmin(PageAdmin):
                                "location")}),))
     form = OrganizationalUnitForm
 
+    def save_model(self, request, obj, form, change):
+        print(obj)
+        super(OrganizationalUnitAdmin, self).save_model(
+            request, obj, form, change)
+        #print(obj)
+
 
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(OrganizationalUnit, OrganizationalUnitAdmin)

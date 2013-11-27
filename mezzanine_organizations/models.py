@@ -41,8 +41,8 @@ class OrganizationalUnit(Page):
     location = RichTextField(blank=True, verbose_name=_('Location'))
 
     class Meta:
-        verbose_name = _('Organization unit')
-        verbose_name_plural = _('Organization units')
+        verbose_name = _('Organizational unit')
+        verbose_name_plural = _('Organizational units')
 
     #def get_absolute_url(self):
     #    # TODO: sistemare questo metodo dopo aver sistemato il file urls.py
