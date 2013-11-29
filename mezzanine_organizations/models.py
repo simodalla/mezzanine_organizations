@@ -10,41 +10,39 @@ from mezzanine.pages.models import Page
 
 
 class Organization(Page):
-    domain = models.CharField(max_length=100, verbose_name=_('Domain'),
+    domain = models.CharField(max_length=100, verbose_name=_("Domain"),
                               blank=True, null=True, unique=True)
 
     class Meta:
-        verbose_name = _('Organization')
-        verbose_name_plural = _('Organizations')
-
-    #def get_absolute_url(self):
-    #    # TODO: sistemare questo metodo dopo aver sistemato il file urls.py
-    #    return '.'
+        verbose_name = _("Organization")
+        verbose_name_plural = _("Organizations")
 
 
 class OrganizationalUnit(Page):
-    organization = models.ForeignKey(Organization,
-                                     verbose_name=_('Organization'),
-                                     related_name='ous')
     leader = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True,
-                               related_name='leader_of',
-                               verbose_name=_('Leader'))
+                               related_name="leader_of",
+                               verbose_name=_("Leader"))
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                      blank=True, null=True,
-                                     related_name='member_of',
-                                     verbose_name=_('Members'))
-    email = models.EmailField(blank=True, verbose_name=_('Email'))
-    pec = models.EmailField(blank=True, verbose_name=_('Pec'))
+                                     related_name="member_of",
+                                     verbose_name=_("Members"))
+    email = models.EmailField(blank=True, verbose_name=_("Email"))
+    pec = models.EmailField(blank=True, verbose_name=_("Pec"))
     phone_number = models.CharField(max_length=20, blank=True,
-                                    verbose_name=_('Phone Number'))
-    fax = models.CharField(max_length=20, blank=True, verbose_name=_('Fax'))
-    location = RichTextField(blank=True, verbose_name=_('Location'))
+                                    verbose_name=_("Phone Number"))
+    fax = models.CharField(max_length=20, blank=True, verbose_name=_("Fax"))
+    location = RichTextField(blank=True, verbose_name=_("Location"))
 
     class Meta:
-        verbose_name = _('Organizational unit')
-        verbose_name_plural = _('Organizational units')
+        get_latest_by = "created"
+        verbose_name = _("Organizational unit")
+        verbose_name_plural = _("Organizational units")
 
-    #def get_absolute_url(self):
-    #    # TODO: sistemare questo metodo dopo aver sistemato il file urls.py
-    #    return '.'
-
+    def get_organization(self, from_down=True):
+        ascendats = self.get_ascendants()
+        if not from_down:
+            ascendats = reversed(ascendats)
+        for page in ascendats:
+            if isinstance(page, Organization):
+                return page.organizarion
+            continue
