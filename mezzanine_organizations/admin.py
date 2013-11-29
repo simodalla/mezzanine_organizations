@@ -16,6 +16,7 @@ class OrganizationAdmin(PageAdmin):
     fieldsets = (deepcopy(PageAdmin.fieldsets) +
                  ((_("Organization Data"), {"fields": ("domain",)}),))
 
+
 class OrganizationalUnitAdmin(PageAdmin):
     fieldsets = (deepcopy(PageAdmin.fieldsets) +
                  ((_("Organizational Unit Data"),
@@ -23,12 +24,6 @@ class OrganizationalUnitAdmin(PageAdmin):
                                "email", "pec", "phone_number", "fax",
                                "location")}),))
     form = OrganizationalUnitForm
-
-    def save_model(self, request, obj, form, change):
-        print(obj)
-        super(OrganizationalUnitAdmin, self).save_model(
-            request, obj, form, change)
-        #print(obj)
 
 
 admin.site.register(Organization, OrganizationAdmin)
