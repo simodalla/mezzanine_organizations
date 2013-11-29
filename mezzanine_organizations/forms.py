@@ -46,9 +46,5 @@ class OrganizationalUnitForm(forms.ModelForm):
         required=False,
         help_text=_help_text_user_model)
 
-    def __init__(self, *args, **kwargs):
-        print(kwargs)
-        super(OrganizationalUnitForm, self).__init__(*args, **kwargs)
-
     class Meta:
         model = OrganizationalUnit
